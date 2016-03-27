@@ -1,6 +1,9 @@
 <?php
 require_once('JsonEndpoint.php');
 
+/**
+ * Class OpenDungeons
+ */
 class OpenDungeons extends JsonEndpoint {
 
     /**
@@ -12,6 +15,11 @@ class OpenDungeons extends JsonEndpoint {
         return $this->_respond([$data], 200);
     }
 
+    /**
+     * @param $args
+     * @return \Psr\Http\Message\ResponseInterface
+     * @throws Exception
+     */
     public function post($args) {
         $object = json_decode($this->request->getBody());
         if (is_null($object)) {
@@ -26,6 +34,10 @@ class OpenDungeons extends JsonEndpoint {
         }
 
         $result = $this->container->get('Mysql')->addOpenDungeon($object->dungeon_id, isset($object->time_remaining) ? $object->time_remaining : null);
-        var_dump($result);
+        if ($result) {
+            return $this->_respond([], 201);
+        } else {
+            throw new Exception();
+        }
     }
 }

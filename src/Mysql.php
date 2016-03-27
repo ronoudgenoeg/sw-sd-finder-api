@@ -31,7 +31,7 @@ class Mysql {
     }
 
     public function getOpenDungeons() {
-        $q = $this->mysql->query('SELECT * FROM open_dungeons where ADDTIME(open_time, \'01:00:00\') > NOW()');
+        $q = $this->mysql->query('SELECT dungeon_id, TIMESTAMPDIFF(SECOND, open_time, NOW()) as time_remaining FROM open_dungeons where ADDTIME(open_time, \'01:00:00\') > NOW()');
         return $q->fetchAll(PDO::FETCH_ASSOC);
     }
 
