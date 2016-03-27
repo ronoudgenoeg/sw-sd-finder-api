@@ -1,0 +1,7 @@
+<?php
+
+const ENVIRONMENT = ENV_DEV;
+const MYSQL_HOST = 'localhost';
+const MYSQL_DB = 'sw-sd-finder';
+const MYSQL_USER = 'localhost';
+const MYSQL_PASS = null;

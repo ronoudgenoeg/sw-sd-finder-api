@@ -1,0 +1,8 @@
+CREATE DATABASE `sw-sd-finder` /*!40100 DEFAULT CHARACTER SET utf8 */;
+
+CREATE TABLE `dungeon` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
