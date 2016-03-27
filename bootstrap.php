@@ -56,8 +56,11 @@ $c['errorHandler'] = function ($c) {
                 'message' => $exception->getMessage()
             ];
         }
-
-        return $c->get('response')->withJson($data, $exception->getCode());
+        $code = $exception->getCode();
+        if ($code === 0) {
+            $code = 500;
+        }
+        return $c->get('response')->withJson($data, $code);
     };
 };
 
