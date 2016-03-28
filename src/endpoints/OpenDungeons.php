@@ -12,7 +12,7 @@ class OpenDungeons extends JsonEndpoint {
      */
     public function get($args) {
         $data = $this->container->get('Mysql')->getOpenDungeons();
-        return $this->_respond([$data], 200);
+        return $this->_respond($data, 200);
     }
 
     /**

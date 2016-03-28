@@ -8,6 +8,6 @@ class Regions extends JsonEndpoint {
      */
     public function get($args) {
         $data = $this->container->get('Mysql')->getRegions();
-        return $this->_respond([$data], 200);
+        return $this->_respond($data, 200);
     }
 }

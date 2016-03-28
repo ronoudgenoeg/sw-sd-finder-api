@@ -9,6 +9,6 @@ class Dungeons extends JsonEndpoint {
      */
     public function get($args) {
         $data = $this->container->get('Mysql')->getDungeons();
-        return $this->_respond([$data], 200);
+        return $this->_respond($data, 200);
     }
 }
