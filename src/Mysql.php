@@ -31,20 +31,31 @@ class Mysql {
     }
 
     public function getOpenDungeons() {
-        $q = $this->mysql->query('SELECT dungeon_id, TIMESTAMPDIFF(SECOND, open_time, NOW()) as time_remaining FROM open_dungeons where ADDTIME(open_time, \'01:00:00\') > NOW()');
+        $q = $this->mysql->query('SELECT dungeon_id, TIMESTAMPDIFF(SECOND, open_time, NOW()) as time_remaining, region_id FROM open_dungeon where ADDTIME(open_time, \'01:00:00\') > NOW()');
         return $q->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function addOpenDungeon($dungeonId, $timeRemaining = null) {
-        $openTime = null;
-        if(!is_null($timeRemaining)) {
-            $q = $this->mysql->prepare('INSERT INTO open_dungeons (dungeon_id, open_time) VALUES (:dungeon_id, :open_time)');
-            $openTime = time() - 3600 + $timeRemaining;
-            return $q->execute(['dungeon_id' => $dungeonId, 'open_time' => date('Y-m-d H:i:s', $openTime)]);
+    public function getRegions() {
+        $q = $this->mysql->query('SELECT * FROM region');
+        return $q->fetchAll(PDO::FETCH_ASSOC);
+    }
 
+    public function addOpenDungeon($openDungeon) {
+        $openTime = null;
+        if(isset($openDungeon->time_remaining)) {
+            $q = $this->mysql->prepare('INSERT INTO open_dungeon (dungeon_id, open_time, region_id) VALUES (:dungeon_id, :open_time, :region_id)');
+            $openTime = time() - 3600 + $openDungeon->time_remaining;
+            return $q->execute([
+                'dungeon_id' => $openDungeon->dungeon_id,
+                'open_time' => date('Y-m-d H:i:s', $openTime),
+                'region_id' => $openDungeon->region_id
+            ]);
         } else {
-            $q = $this->mysql->prepare('INSERT INTO open_dungeons (dungeon_id) VALUES (:dungeon_id)');
-            return $q->execute(['dungeon_id' => $dungeonId]);
+            $q = $this->mysql->prepare('INSERT INTO open_dungeon (dungeon_id, region_id) VALUES (:dungeon_id, :region_id)');
+            return $q->execute([
+                'dungeon_id' => $openDungeon->dungeon_id,
+                'region_id' => $openDungeon->region_id
+            ]);
         }
 
     }
